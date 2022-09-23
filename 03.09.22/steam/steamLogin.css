@@ -1,39 +1,41 @@
 body {
-  margin: 0px;
-  padding: 0px;
-  position: relative;
-  min-height: 100%;
-  color: #E9E9E9;
-  background-color: #181A21;
-  font-weight: normal;
-  font-family: "Motiva Sans", Sans-serif;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    min-height: 100%;
+    color: #E9E9E9;
+    background-color: #181A21;
+    font-weight: normal;
+    font-family: "Motiva Sans", Sans-serif;
 }
 
+.tablet-header {display: none;}
+
 .global-header {
-  background: #171a21;
-  background-position: center top;
-  padding-left: 16px;
-  padding-right: 16px;
-  min-width: 940px;
-  font-family: "Motiva Sans", Sans-serif;
-  font-weight: normal;
-  font-size: 14px;
+    background: #171a21;
+    background-position: center top;
+    padding-left: 16px;
+    padding-right: 16px;
+    min-width: 940px;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: normal;
+    font-size: 14px;
 }
 
 .header-content {
-  position: relative;
-  width: 940px;
-  height: 104px;
-  margin: 0px auto;
-  z-index: 402;
+    position: relative;
+    width: 940px;
+    height: 104px;
+    margin: 0px auto;
+    z-index: 402;
 }
 
 .logo {
-  float: left;
-  padding-top: 30px;
-  margin-right: 40px;
-  width: 176px;
-  height: 44px;
+    float: left;
+    padding-top: 30px;
+    margin-right: 40px;
+    width: 176px;
+    height: 44px;
 }
 
 .navbar {
@@ -42,43 +44,43 @@ body {
 }
 
 .navbaritem {
-  display: block;
-  position: relative;
-  padding-top: 45px;
-  padding-left: 7px;
-  padding-right: 7px;
-  padding-bottom: 7px;
-  line-height: 16px;
-  float: left;
-  font-size: 14px;
-  color: #b8b6b4;
-  text-transform: uppercase;
+    display: block;
+    position: relative;
+    padding-top: 45px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 7px;
+    line-height: 16px;
+    float: left;
+    font-size: 14px;
+    color: #b8b6b4;
+    text-transform: uppercase;
 }
 
 
 .actions {
-  position: absolute;
-  right: 0px;
-  top: 6px;
-  height: 21px;
-  line-height: 21px;
-  color: #b8b6b4;
-  font-size: 11px;
-  z-index: 401;
+    position: absolute;
+    right: 0px;
+    top: 6px;
+    height: 21px;
+    line-height: 21px;
+    color: #b8b6b4;
+    font-size: 11px;
+    z-index: 401;
 }
 
 .actions-container {
-  line-height: 24px;
-  vertical-align: top;
-  display: inline-block;
+    line-height: 24px;
+    vertical-align: top;
+    display: inline-block;
 }
 
 .install-button {
-  display: inline-block;
-  position: relative;
-  height: 21px;
-  line-height: 24px;
-  margin-right: 3px;
+    display: inline-block;
+    position: relative;
+    height: 21px;
+    line-height: 24px;
+    margin-right: 3px;
 }
 
 .install-button-content {
@@ -96,136 +98,135 @@ body {
 
 .install-button-content:hover, .enter-link:hover,
 .pulldown:hover, .navbaritem:hover {
-  text-decoration: none;
-  color: #ffffff;
+    text-decoration: none;
+    color: #ffffff;
 }
 
 .enter-link {
-  color: #b8b6b4;
-  padding: 0 4px;
+    color: #b8b6b4;
+    padding: 0 4px;
 }
 
 .pulldown {
-  margin-right: 5px;
-  padding-left: 5px;
-  padding-right: 18px;
-  background-image: url(https://store.cloudflare.steamstatic.com/public/shared/images/popups/btn_arrow_down_padded.png);
-  background-position: right center;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  text-align: center;
+    margin-right: 5px;
+    padding-left: 5px;
+    padding-right: 18px;
+    background-image: url(https://store.cloudflare.steamstatic.com/public/shared/images/popups/btn_arrow_down_padded.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    text-align: center;
 }
 
 .page-content {
-  margin: 0 auto;
-  padding: 0px 8px;
-  width: 100%;
-  background: radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat,
-              url( 'https://store.cloudflare.steamstatic.com/public/shared/images/joinsteam/new_login_bg_strong_mask.jpg' )
-              center top no-repeat, #181A21;
-
+    margin: 0 auto;
+    padding: 0px 8px;
+    width: 100%;
+    background: radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat,
+                url( 'https://store.cloudflare.steamstatic.com/public/shared/images/joinsteam/new_login_bg_strong_mask.jpg' )
+                center top no-repeat, #181A21;
 }
 
 .login-container {
-  display: flex;
-  padding-top: 80px;
-  padding-bottom: 150px;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    padding-top: 80px;
+    padding-bottom: 150px;
+    flex-direction: column;
+    align-items: center;
 }
 
 .login-window {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 }
 
 .enter-message {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 8px 16px;
-  text-transform: uppercase;
-  letter-spacing: .055em;
-  font-weight: 200;
-  font-family: "Motiva Sans", Sans-serif;
-  font-size: 32px;
-  color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 8px 16px;
+    text-transform: uppercase;
+    letter-spacing: .055em;
+    font-weight: 200;
+    font-family: "Motiva Sans", Sans-serif;
+    font-size: 32px;
+    color: #fff;
 }
 
 .login-formcontainer {
-  background-color: #181a21;
-  border-radius: 4px;
-  padding: 24px 32px;
-  flex: 1;
-  min-width: 636px;
+    background-color: #181a21;
+    border-radius: 4px;
+    padding: 24px 32px;
+    flex: 1;
+    min-width: 636px;
 }
 
 .dialog-login-window {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
 }
 
 .login-table {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  flex: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    flex: 1;
 }
 
 .form-postscriptum {
-  color: #afafaf;
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-  text-align: center;
+    color: #afafaf;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: center;
 }
 
 .field-container {
-  grid-template-areas: "label hint"
+    grid-template-areas: "label hint"
                        "input input";
-  grid-template-columns: 1fr;
-  gap: 2px;
+    grid-template-columns: 1fr;
+    gap: 2px;
 }
 
 .field-tittle {
-  color: #1999ff;
-  font-weight: 500;
-  font-size: 12px;
-  font-family: "Motiva Sans", Sans-serif;
-  text-transform: uppercase;
-  letter-spacing: .02em;
-  user-select: none;
+    color: #1999ff;
+    font-weight: 500;
+    font-size: 12px;
+    font-family: "Motiva Sans", Sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    user-select: none;
 }
 
 .remeber-me {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
 }
 
 .checkbox-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
 }
 
 .box {
-  width: 14px;
-  height: 14px;
-  padding: 3px;
-  border-radius: 2px;
-  background-color: #32353c;
-  cursor: pointer;
+    width: 14px;
+    height: 14px;
+    padding: 3px;
+    border-radius: 2px;
+    background-color: #32353c;
+    cursor: pointer;
 }
 
 .enter-button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .enter-button {
@@ -407,7 +408,7 @@ body {
 .valve-links {
   margin-top: 8px;
   float: left;
-  font-family: "Motiva Sans", Sans-serif;
+  font-family: "Motiva Sans", "Sans-serif";
   font-weight: normal;
   font-size: 13px;
   color: #61686D;
@@ -417,28 +418,7 @@ body {
   color: #C6D4DF;
 }
 
-::-webkit-scrollbar {
-    height: 12px;
-    width: 14px;
-    background: transparent;
-    z-index: 12;
-    overflow: visible;
-}
-
-::-webkit-scrollbar-thumb {
-    width: 10px;
-    background-color: #434953;
-    border-radius: 10px;
-    z-index: 12;
-    border: 4pxsolidrgba(0,0,0,0);
-    background-clip: padding-box;
-    transition: background-color .32s ease-in-out;
-    margin: 4px;
-    min-height: 32px;
-    min-width: 32px;
-}
-
-input {
+.inputfield {
   word-wrap: break-word;
   white-space: pre;
   margin-top: 3px;
@@ -453,11 +433,57 @@ input {
   border: 1px solid #32353c;
 }
 
-input:hover {
+.inputfield:hover {
   background-color: #393c44;
 }
 
-
 a {
   text-decoration: none;
+}
+
+main {
+    color: #E9E9E9;
+    background-color: #181A21;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: normal;
+}
+
+
+::-webkit-scrollbar {
+    height: 12px;
+    width: 14px;
+    background: transparent;
+    z-index: 12;
+    overflow: visible;
+}
+
+::-webkit-scrollbar-corner {
+    background: #202020;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #434953;
+    border-radius: 10px;
+    z-index: 12;
+    border: 4px solid rgba(0,0,0,0);
+    background-clip: padding-box;
+    transition: background-color .32s ease-in-out;
+    margin: 4px;
+    min-height: 32px;
+    min-width: 32px;
+}
+
+
+.page-overlay {
+    visibility: hidden;
+    opacity: 0;
+    background: rgba( 0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 25;
+    transition: visibility 0.5s, opacity 0.5s;
 }
