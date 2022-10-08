@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="google/css/googleStyle.css">
+    <link rel="icon" href="google/source/favicon.ico">
+    <title>Google</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="navbar">
+        <div>
+          <div class="mailandpicture">
+            <div class="mailandpicutre-container">
+              <a class="mailandpicture-text" href="https://mail.google.com/mail/&amp;ogbl">
+                Почта
+              </a>
+            </div>
+            <div class="mailandpicutre-container">
+              <a class="mailandpicture-text" href="https://www.google.ru/imghp?hl=ru&amp;ogbl">
+                Картинки
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="toolbar-tools">
+            <div class="toolbar-tools-svgcontainer">
+                <a class="tools-icon-container" aria-label="Приложения Google" href="https://www.google.ru/intl/ru/about/products">
+                  <svg class="tools-icon" focusable="false" viewBox="0 0 24 24"><path d="M6,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM16,6c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2zM12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z"></path></svg>
+                </a>
+            </div>
+          </div>
+          <a class="login-button" href="https://accounts.google.com/ServiceLogin?hl=ru&amp;passive=true&amp;continue=https://www.google.ru/&amp;ec=GAZAmgQ">
+            Войти
+          </a>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="logo">
+        <img alt="Google" height="92" src="google/source/googlelogo_color_272x92dp.png">
+      </div>
+      <div class="searchbar-container">
+        <form action="/search" method="GET">
+          <div class="searchbar">
+            <div class="searchbar-inside">
+              <div class="magnifying-glass-container">
+                <div>
+                  <span class="magnifying-glass">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div class="input-container">
+                <div class="searchinput">
+
+                </div>
+                <input type="text" class="searchinput inputfield">
+              </div>
+              <div class="searchbar-buttons">
+                <div class="separator">
+                </div>
+                <div class="numpad" aria-label="Экранная клавиатура">
+                  <span class="numpad-ico">
+
+                  </span>
+                </div>
+                <div class="micro" aria-label="Голосовой поиск">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285f4" d="m12 15c1.66 0 3-1.31 3-2.97v-7.02c0-1.66-1.34-3.01-3-3.01s-3 1.34-3 3.01v7.02c0 1.66 1.34 2.97 3 2.97z"></path><path fill="#34a853" d="m11 18.08h2v3.92h-2z"></path><path fill="#fbbc05" d="m7.05 16.87c-1.27-1.33-2.05-2.83-2.05-4.87h2c0 1.45 0.56 2.42 1.47 3.38v0.32l-1.15 1.18z"></path><path fill="#ea4335" d="m12 16.93a4.97 5.25 0 0 1 -3.54 -1.55l-1.41 1.49c1.26 1.34 3.02 2.13 4.95 2.13 3.87 0 6.99-2.92 6.99-7h-1.99c0 2.92-2.24 4.93-5 4.93z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="undersearchinput">
+            <center>
+              <input class="undersearch-button" type="submit" value="Поиск в Google" aria-label="Поиск в Google">
+              <input class="undersearch-button" value="Мне повезёт!" aria-label="Мне повезёт!" type="submit">
+            </center>
+          </div>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <div class="country">
+        Россия
+      </div>
+      <div class="refs">
+        <div class="slogan-container">
+          <a class="slogan-container-ref block" href="https://sustainability.google/intl/ru/carbon-free/?utm_source=googlehpfooter&amp;utm_medium=housepromos&amp;utm_campaign=bottom-footer&amp;utm_content=" ping="/url?sa=t&amp;rct=j&amp;source=webhp&amp;url=https://sustainability.google/intl/ru/carbon-free/%3Futm_source%3Dgooglehpfooter%26utm_medium%3Dhousepromos%26utm_campaign%3Dbottom-footer%26utm_content%3D&amp;ved=0ahUKEwiy4-Gq-YL6AhVRR_EDHZO5B8QQiM8HCBA">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAYCAMAAAAiV0Z6AAAAPFBMVEVLoEN0wU6CzFKCzFKCzFKCzFKCzFJSo0MSczNDmkCCzFJPoUMTczNdr0gmgziCzFITczMTczMTczMTczPh00jOAAAAFHRSTlPF/+bIsms8Ad///hX+//5/tXw7aMEAx10AAACaSURBVHgBbc4HDoRQCATQ33tbvf9dF9QxaCT9UQaltLHOh/golXKhMs5Xqa0xU1lyoa2fXFyQOsDG38qsLy4TaV+sFislovyhPzLJJrBu6eQOtpW0LjbJkzTuTDLRVNKa3uxJI+VdiRqXSeu6GW+Qxi29eLIi8H7EsYrT42BD+mQtNO5JMjRuC4lSY8V4hsLX0egGijvUSEP9AbylEsOkeCgWAAAAAElFTkSuQmCC"
+            style="height: 14px; margin-right: 6px;" alt="">
+            <span style="">Нулевой баланс выбросов углекислого газа с 2007 года</span>
+          </a>
+        </div>
+        <div class="services">
+          <a class="block" href="https://about.google/?utm_source=google-RU&amp;utm_medium=referral&amp;utm_campaign=hp-footer&amp;fg=1" ping="/url?sa=t&amp;rct=j&amp;source=webhp&amp;url=https://about.google/%3Futm_source%3Dgoogle-RU%26utm_medium%3Dreferral%26utm_campaign%3Dhp-footer%26fg%3D1&amp;ved=0ahUKEwiy4-Gq-YL6AhVRR_EDHZO5B8QQkNQCCA0">Всё о Google</a>
+          <a class="block" href="https://www.google.ru/intl/ru_ru/ads/?subid=ww-ww-et-g-awa-a-g_hpafoot1_1!o2&amp;utm_source=google.com&amp;utm_medium=referral&amp;utm_campaign=google_hpafooter&amp;fg=1" ping="/url?sa=t&amp;rct=j&amp;source=webhp&amp;url=https://www.google.ru/intl/ru_ru/ads/%3Fsubid%3Dww-ww-et-g-awa-a-g_hpafoot1_1!o2%26utm_source%3Dgoogle.com%26utm_medium%3Dreferral%26utm_campaign%3Dgoogle_hpafooter%26fg%3D1&amp;ved=0ahUKEwiy4-Gq-YL6AhVRR_EDHZO5B8QQkdQCCA4">Реклама</a>
+          <a class="block" href="https://www.google.ru/services/?subid=ww-ww-et-g-awa-a-g_hpbfoot1_1!o2&amp;utm_source=google.com&amp;utm_medium=referral&amp;utm_campaign=google_hpbfooter&amp;fg=1" ping="/url?sa=t&amp;rct=j&amp;source=webhp&amp;url=https://www.google.ru/services/%3Fsubid%3Dww-ww-et-g-awa-a-g_hpbfoot1_1!o2%26utm_source%3Dgoogle.com%26utm_medium%3Dreferral%26utm_campaign%3Dgoogle_hpbfooter%26fg%3D1&amp;ved=0ahUKEwiy4-Gq-YL6AhVRR_EDHZO5B8QQktQCCA8">Для бизнеса</a>
+          <a class="block" href="https://google.com/search/howsearchworks/?fg=1"> Как работает Google Поиск </a>
+        </div>
+        <div class="settings">
+          <a class="block" href="https://policies.google.com/privacy?hl=ru&amp;fg=1" ping="/url?sa=t&amp;rct=j&amp;source=webhp&amp;url=https://policies.google.com/privacy%3Fhl%3Dru%26fg%3D1&amp;ved=0ahUKEwi5lsfLgIP6AhWkS_EDHSVoDRcQ8awCCBE">Конфиденциальность</a>
+          <a class="block" href="https://policies.google.com/terms?hl=ru&amp;fg=1" ping="/url?sa=t&amp;rct=j&amp;source=webhp&amp;url=https://policies.google.com/terms%3Fhl%3Dru%26fg%3D1&amp;ved=0ahUKEwi5lsfLgIP6AhWkS_EDHSVoDRcQ8qwCCBI">Условия</a>
+          <a class="block" href="#">Настройки</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
