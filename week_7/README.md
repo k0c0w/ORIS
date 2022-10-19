@@ -1,0 +1,2 @@
+-папку static нужно взять с week_5 (коммит abf3839fa025a7c73c509ab3e0abb1dad38c578f)
+-settings.json и static переместить к исполняемому файлу
