@@ -36,7 +36,16 @@ namespace HTTPServer.Services
             WriteToBody(response.OutputStream, buffer);
         }
 
-        private static void WriteToBody(Stream output, byte[] buffer)
+        public static async Task WriteToBodyAsync(Stream output, byte[] buffer)
+        {
+            using (output)
+            {
+                await output.WriteAsync(buffer, 0, buffer.Length);
+                output.Close();
+            }
+        }
+
+        public static void WriteToBody(Stream output, byte[] buffer)
         {
             using(output)
             {
