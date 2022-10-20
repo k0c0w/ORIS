@@ -1,11 +1,12 @@
-﻿using System.Net;
+﻿using HTTPServer.Controllers;
+using HTTPServer.Services;
+using System.Net;
 using System.Net.Mime;
 using System.Text;
-using System.Threading;
 
 namespace HTTPServer
 {
-    internal class HttpServer
+    public class HttpServer
     {
         readonly ILogger logger;
         readonly HttpListener listener = new HttpListener();
@@ -64,7 +65,7 @@ namespace HTTPServer
             var request = context.Request;
             var response = context.Response;
             byte[] buffer;
-            if (Directory.Exists(path))
+            if(!Directory.Exists(path))
             {
                 var rawUrl = context.Request.RawUrl.Replace("%20", " ");
                 var bufferExtentionTuple = FileProvider.GetFileAndFileExtension(path + rawUrl);
@@ -72,13 +73,20 @@ namespace HTTPServer
                 var extention = bufferExtentionTuple.Item2;
                 if(buffer == null)
                 {
-                    response.Headers.Set("Content-Type", "text/plain");
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
-                    var err = "404 - not found";
-                    buffer = Encoding.UTF8.GetBytes(err);
+                    response.SetStatusCode((int)HttpStatusCode.NotFound)
+                            .SetContentType(".txt")
+                            .Write404PageToBody();
+                    logger.Log($"\n{request.ProtocolVersion} {request.HttpMethod} {request.Url} {response.StatusCode}\n");
+                    response.Close();
+                    return;
                 }
                 else
-                response.Headers.Set("Content-Type", GetContentType(extention));
+                response.SetContentType(extention);
+            }
+            else if (true)
+            {
+                new ApiController().SaveAccount(context);
+                return;
             }
             else
             {
@@ -94,36 +102,6 @@ namespace HTTPServer
 
             logger.Log($"\n{request.ProtocolVersion} {request.HttpMethod} {request.Url} {response.StatusCode}\n");
             response.Close();
-        }
-
-        private string GetContentType(string extension)
-        {
-            switch (extension)
-            {
-                case ".htm":
-                case ".html":
-                    return  "text/html";
-                case ".css":
-                    return "text/css";
-                case ".js":
-                    return  "text/javascript";
-                case ".jpg":
-                    return "image/jpeg";
-                case ".jpeg":
-                case ".png":
-                case ".gif":
-                    return "image/" + extension.Substring(1);
-                case ".ico":
-                    return "image/x-icon";
-                case ".svg":
-                    return "image/svg+xml";
-
-                default:
-                    if (extension?.Length > 1)
-                        return "application/" + extension.Substring(1);
-                    else
-                        return  "application/unknown";
-            }
         }
     }
 }
