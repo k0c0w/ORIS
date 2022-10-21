@@ -7,7 +7,7 @@
 
         public override string ToString()
         {
-            return $"Аккаунт Steam: (Логин: {Login}, Пароль: {Password})";
+            return $"Steam Account: (Login: {Login}, Password: {Password})";
         }
     }
 }
