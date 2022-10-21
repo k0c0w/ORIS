@@ -1,14 +1,9 @@
 ﻿namespace HTTPServer
 {
-    public class HttpGetAttribute : Attribute
+    public class HttpGetAttribute : ApiControllerMethodAttribute
     {
-        public readonly string MethodURI;
+        public HttpGetAttribute(string methodURI) : base(methodURI) { }
 
-        public HttpGetAttribute(string methodURI)
-        {
-            MethodURI = methodURI;
-        }
-
-        public HttpGetAttribute() : this(""){ }
+        public HttpGetAttribute() : base(){ }
     }
 }

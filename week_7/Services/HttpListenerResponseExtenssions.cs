@@ -31,9 +31,10 @@ namespace HTTPServer.Services
             return response;
         }
 
-        public static void WriteToBody(this HttpListenerResponse response, byte[] buffer)
+        public static HttpListenerResponse WriteToBody(this HttpListenerResponse response, byte[] buffer)
         {
             WriteToBody(response.OutputStream, buffer);
+            return response;
         }
 
         public static async Task WriteToBodyAsync(Stream output, byte[] buffer)

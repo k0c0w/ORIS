@@ -1,14 +1,8 @@
 ﻿namespace HTTPServer
 {
-    public  class HttpPostAttribute : Attribute
+    public  class HttpPostAttribute : ApiControllerMethodAttribute
     {
-        public readonly string MethodURI;
-
-        public HttpPostAttribute(string methodURI)
-        {
-            MethodURI = methodURI;
-        }
-
-        public HttpPostAttribute() : this("") { }
+        public HttpPostAttribute(string methodURI) : base(methodURI) { }
+        public HttpPostAttribute() : base() { }
     }
 }

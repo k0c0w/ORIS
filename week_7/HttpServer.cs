@@ -10,11 +10,12 @@ namespace HTTPServer
 {
     public class HttpServer
     {
+        public readonly string path;
+        public readonly int _port;
         readonly ILogger logger;
         readonly HttpListener listener = new HttpListener();
-        readonly string path;
-        readonly int _port;
 
+        public static string Path { get; private set; }
         public bool IsRunning { get; private set; }
 
         public HttpServer(ILogger logger, ServerSettings settings)
@@ -22,6 +23,7 @@ namespace HTTPServer
             this.logger = logger;
             listener.Prefixes.Add($"http://localhost:{settings.Port}/");
             path = settings.Path;
+            Path = path;
             _port = settings.Port;
         }
 
@@ -48,7 +50,6 @@ namespace HTTPServer
                 if (IsRunning)
                 {
                     logger.ReportError($"Closing server since exception: {ex.Message}");
-                    Stop();
                 }
             }
         }
@@ -70,7 +71,7 @@ namespace HTTPServer
                 response = await WriteFileIfExists(context);
 
             if (response == null)
-                response = await DelegeteRequestToApiIfExists(context);
+                response = await GiveContextToControllerByRouteIfExists(context);
 
             if (response == null)
             {
@@ -85,41 +86,94 @@ namespace HTTPServer
             response.Close();
         }
 
-        private async Task<HttpListenerResponse?> DelegeteRequestToApiIfExists(HttpListenerContext context)
+        private async Task<HttpListenerResponse?> GiveContextToControllerByRouteIfExists(HttpListenerContext context)
         {
             HttpListenerRequest request = context.Request;
-            HttpListenerResponse response = context.Response;
+            var httpMethod = request.HttpMethod.ToUpper();
+            var segments = context!.Request!.Url!.Segments;
 
-            if (context.Request.Url.Segments.Length < 2) return null;
+            if (segments.Length < 1) return null;
+            segments[segments.Length - 1] = segments[segments.Length - 1].Replace("/","");
 
-            string controllerName = context.Request.Url.Segments[1].Replace("/", "");
+            var tuple = GetControllerAndMethodRoute(segments);
+            string controllerRoute = tuple.Item1;
+            string? methodRoute = tuple.Item2;
 
-            string[] strParams = context.Request.Url
-                                    .Segments
-                                    .Skip(2)
-                                    .Select(s => s.Replace("/", ""))
-                                    .ToArray();
+            var controllerType = typeof(ApiControllerAttribute);
+            var controller = GetRequiredController(controllerType, controllerRoute, Assembly.GetExecutingAssembly());
 
-            var assembly = Assembly.GetExecutingAssembly();
+            if (controller == null)
+                return null;
+            if (string.IsNullOrEmpty(methodRoute))
+                methodRoute = controller.Name.Replace("Controller", "");
 
-            var controller = assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(ApiControllerAttribute))).FirstOrDefault(c => c.Name.ToLower() == controllerName.ToLower());
+            var markedMethods = controller.GetMethods().Where(x => x.GetCustomAttribute(typeof(ApiControllerMethodAttribute)) != null);
+            var method = GetRequiredMethod(httpMethod, markedMethods, methodRoute);
 
-            if (controller == null) return null;
+            if (method == null)
+                return null;
 
-            var test = typeof(ApiControllerAttribute).Name;
-            var method = controller.GetMethods().Where(t => t.GetCustomAttributes(true)
-                                                              .Any(attr => attr.GetType().Name == $"Http{context.Request.HttpMethod}"))
-                                                 .FirstOrDefault();
+            var controllerInstance = controller.GetConstructor(new Type[0]).Invoke(new object[0]);
+            var response = method.Invoke(controllerInstance, new object[] { context }) as Task<HttpListenerResponse>;
 
-            if (method == null) return null;
+            return await response;
+        }
 
-            object[] queryParams = method.GetParameters()
-                                .Select((p, i) => Convert.ChangeType(strParams[i], p.ParameterType))
-                                .ToArray();
+        private Type? GetRequiredController(Type controllerType, string controllerRoute, Assembly assembly)
+        {
+            return assembly.GetTypes()
+                                     .Where(type => Attribute.IsDefined(type, controllerType))
+                                     .Select(type => (type, type.GetCustomAttribute(controllerType) as ApiControllerAttribute))
+                                     .Where(tuple =>
+                                            tuple.Item2 != null
+                                            && (string.IsNullOrEmpty(tuple.Item2.ControllerName)
+                                            ? tuple.Item1.Name.Replace("Controller", "") == controllerRoute
+                                            : tuple.Item2.ControllerName == controllerRoute))
+                                     .Select(tuple => tuple.Item1)
+                                     .FirstOrDefault();
+        }
 
-            var ret = await (Task<HttpListenerResponse>)method.Invoke(Activator.CreateInstance(controller), queryParams);
+        private MethodInfo? GetRequiredMethod(string httpMethod, IEnumerable<MethodInfo?> markedMethods, string route)
+        {
+            Func<Type, MethodInfo?> selector = 
+                (type) => markedMethods.Select(x => (x, x.GetCustomAttribute(type) as ApiControllerMethodAttribute))
+                                       .Where(
+                                            x => x.Item2 != null 
+                                            && (string.IsNullOrEmpty(x.Item2.MethodURI) 
+                                            ? x.Item1!.Name == route : x.Item2.MethodURI == route))
+                                       .Select(x => x.Item1)
+                                       .FirstOrDefault();
+            switch (httpMethod)
+            {
+                case "GET":
+                    return selector(typeof(HttpGetAttribute));
+                case "POST":
+                    return selector(typeof(HttpPostAttribute));
+                default:
+                    return null;
+            }
+        }
 
-            return ret;
+        private (string, string?) GetControllerAndMethodRoute(string[] segments)
+        {
+            Func<string, string> removeSlash = (word) => word.Replace("/", string.Empty); 
+            string? method = null;
+            string? controller = null;
+
+            if (segments.Length == 1 && segments[0] == String.Empty)
+                controller = "/";
+            else if (segments.Length == 3)
+            {
+                controller = removeSlash(segments[1]);
+                method = segments[2];
+            }
+            else
+            {
+                controller = removeSlash(segments[1]);
+                method = string.Concat(segments.Skip(2).TakeWhile(x => x != "?"));
+            }
+
+            return (controller, method);
         }
 
         private async Task<HttpListenerResponse?> WriteFileIfExists(HttpListenerContext context)
