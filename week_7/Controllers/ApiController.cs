@@ -24,8 +24,9 @@ namespace HTTPServer.Controllers
                 if (args.Length == 1 && int.TryParse(args[0], out int id))
                 {
                     var account = DBProvider.GetSteamAccount(id);
+                    
                     if (account != null)
-                        response.WriteToBody(Encoding.UTF8.GetBytes(account.ToString()));
+                        await JsonSerializer.SerializeAsync(response.OutputStream, account);
                     else
                         response.WriteToBody(Encoding.UTF8.GetBytes("No Accounts found"));
                 }

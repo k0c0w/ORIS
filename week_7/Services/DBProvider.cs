@@ -5,13 +5,13 @@ namespace HTTPServer.Services
 {
     public static class DBProvider
     {
-        static string connectionString = @"Data Source=(localdb)MSSQLLocalDB;Initial Catalog=AppDB;Integrated Security=True";
+        static string connectionString = @"Server=localhost;Database=test;Trusted_Connection=True;";
 
         static Func<string, List<SteamAccount>> getAccounts = (predicate) =>
         {
             var users = new List<SteamAccount>();
 
-            string sqlExpression = $"SELECT * FROM [dbo].[Accounts] {predicate}";
+            string sqlExpression = $"SELECT login, password FROM [dbo].[Accounts] {predicate}";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -48,8 +48,7 @@ namespace HTTPServer.Services
 
         public static async Task<bool> WriteToDatabaseAsync(SteamAccount user)
         {
-            return true;
-            string sqlExpression = $"INSERT INTO [dbo].[Accounts](login, password) VALUES('{user.Login}', {user.Password})";
+            string sqlExpression = $"INSERT INTO [dbo].[Accounts](login, password) VALUES('{user.Login}', '{user.Password}')";
             int result = 0;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
