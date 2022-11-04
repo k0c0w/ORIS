@@ -6,22 +6,20 @@ namespace HTTPServer.Services
 {
     public static class DBProvider
     {
-        static DatabaseProvider db = new DatabaseProvider( @"Server=localhost;Database=test;Trusted_Connection=True;");
-
+        private static AccountDAO accountDAO = new AccountDAO(new ConsoleLogger()); 
         public static SteamAccount? GetSteamAccount(int id)
         {
-            return db.Select<SteamAccount>(new WhereModel<SteamAccount>(new SteamAccount() { Id = id }))
-                .FirstOrDefault();
+            return accountDAO.GetEntityById(id);
         }
 
         public static IEnumerable<SteamAccount> GetSteamAccounts()
         {
-            return db.Select<SteamAccount>();
+            return accountDAO.GetAll();
         }
 
         public static Task<int> WriteToDatabaseAsync(SteamAccount user)
         {
-            var t =  new Task<int>(() => db.Insert(user));
+            var t =  new Task<int>(() => accountDAO.Create(user) ? 1 : 0);
             t.Start();
             return t;
         }
