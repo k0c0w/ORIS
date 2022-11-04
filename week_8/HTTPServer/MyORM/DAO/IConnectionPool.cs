@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace ORM;
+namespace HTTPServer.MyORM;
 
 public interface IConnectionPool
 {

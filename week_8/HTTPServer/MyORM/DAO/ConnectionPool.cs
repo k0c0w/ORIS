@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
-namespace ORM;
+namespace HTTPServer.MyORM;
 
 public class ConnectionPool : IConnectionPool
 {

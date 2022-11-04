@@ -1,25 +1,29 @@
 ﻿using HTTPServer.Models;
 using System.Data.SqlClient;
-using MyORM;
+using HTTPServer.MyORM;
 
 namespace HTTPServer.Services
 {
     public static class DBProvider
     {
-        private static AccountDAO accountDAO = new AccountDAO(new ConsoleLogger()); 
+        private static SteamAccounts repo = new SteamAccounts(@"Server=localhost;Database=test;Trusted_Connection=True;");
         public static SteamAccount? GetSteamAccount(int id)
         {
-            return accountDAO.GetEntityById(id);
+            return repo.Query(new SelectIdClauses(id)).FirstOrDefault();
         }
 
         public static IEnumerable<SteamAccount> GetSteamAccounts()
         {
-            return accountDAO.GetAll();
+            return repo.Query(new EmptyClauses());
         }
 
         public static Task<int> WriteToDatabaseAsync(SteamAccount user)
         {
-            var t =  new Task<int>(() => accountDAO.Create(user) ? 1 : 0);
+            var t = new Task<int>(() =>
+            {
+                repo.AddAccount(user);
+                return 1;
+            });
             t.Start();
             return t;
         }

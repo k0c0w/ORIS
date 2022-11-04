@@ -7,7 +7,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using DateTime = System.DateTime;
 
-namespace MyORM;
+namespace HTTPServer.MyORM;
 
 public class DatabaseProvider
 {
