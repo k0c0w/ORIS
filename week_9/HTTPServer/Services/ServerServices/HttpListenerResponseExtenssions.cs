@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 
-namespace HTTPServer.Services
+namespace HTTPServer.Services.ServerServices
 {
     public static class HttpListenerResponseExtenssions
     {

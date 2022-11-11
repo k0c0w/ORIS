@@ -2,11 +2,12 @@
 using System.Text;
 using System.Text.Json;
 
-namespace HTTPServer.Services;
+namespace HTTPServer.Services.ServerServices;
 
 public static class ActionResultFactory
 {
     public static IActionResult SendHtml(string html) => new HtmlResult(html);
+    public static IActionResult SendHtml(string html, SessionInfo session) => new HtmlResult(html, session);
     public static IActionResult SendHtml(byte[] html) => new HtmlResult(html);
 
     public static IActionResult RedirectTo(string redirectTo) => new Redirect(redirectTo);
@@ -31,9 +32,15 @@ public class NotFound : IActionResult
 public class HtmlResult : IActionResult
 {
     private readonly byte[] _htmlBytes;
+    private readonly SessionInfo? _sessionInfo;
 
-    public HtmlResult(string html) : this(Encoding.UTF8.GetBytes(html)) {}
-    public HtmlResult(byte[] file) => _htmlBytes = file;
+    public HtmlResult(string html, SessionInfo? sessionInfo = null) : this(Encoding.UTF8.GetBytes(html), sessionInfo) {}
+
+    public HtmlResult(byte[] file, SessionInfo? sessionInfo = null)
+    {
+        _htmlBytes = file;
+        _sessionInfo = sessionInfo;
+    }
     
     public Task ExecuteResultAsync(HttpListenerContext context)
     {
@@ -41,6 +48,14 @@ public class HtmlResult : IActionResult
         {
             var response = context.Response.SetStatusCode((int)HttpStatusCode.OK)
                 .SetContentType(".html");
+            if (_sessionInfo != null)
+            {
+                /*response.Headers.Add("Set-Cookie", "SessionId={"
+                     +$"IsAuthorize: {_sessionInfo.IsAuthorized}, Id={_sessionInfo.AccountId}" +"}");*/
+                response.Cookies.Add(new Cookie("SessionId", 
+                    "{" +$"IsAuthorize: {_sessionInfo.IsAuthorized}, Id={_sessionInfo.AccountId}" +"}"));
+            }
+
             await response.WriteToBodyAsync(_htmlBytes);
             response.Close();
         });

@@ -1,5 +1,5 @@
-﻿using System.Net;
-using HTTPServer.Models;
+﻿using HTTPServer.Models;
+using HTTPServer.Services.ServerServices;
 using HTTPServer.Services;
 
 namespace HTTPServer.Controllers
@@ -24,7 +24,10 @@ namespace HTTPServer.Controllers
         public async Task<IActionResult> Login(string email, string password)
         {
             var account = new SteamAccount() { Login = email, Password = password };
-            var accountExists = DBProvider.GetSteamAccount(account) != null;
+            var accountExists = DBProvider.GetSteamAccount(account);
+            if(accountExists != null)
+                return ActionResultFactory.SendHtml("true", 
+                    new SessionInfo() {IsAuthorized = true, AccountId = (int)accountExists.Id});
             return ActionResultFactory.SendHtml(accountExists.ToString());
         }
     }
