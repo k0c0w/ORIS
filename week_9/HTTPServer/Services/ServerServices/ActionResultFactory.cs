@@ -8,7 +8,7 @@ namespace HTTPServer.Services.ServerServices;
 public static class ActionResultFactory
 {
     public static IActionResult SendHtml(string html) => new HtmlResult(html);
-    public static IActionResult SendHtml(string html, SessionInfo session) => new HtmlResult(html, session);
+    public static IActionResult SendHtml(string html, SessionInfo sessionInfo) => new HtmlResult(html, sessionInfo);
     public static IActionResult SendHtml(byte[] html) => new HtmlResult(html);
 
     public static IActionResult RedirectTo(string redirectTo) => new Redirect(redirectTo);
