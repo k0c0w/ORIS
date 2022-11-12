@@ -8,9 +8,25 @@ namespace HTTPServer.Controllers
     [ApiController("api")]
     public class ApiController
     {
+        [HttpGet("getAccountInfo")]
+        [Authorize]
+        [SessionCookieRequired]
+        public async Task<IActionResult> GetAccountInfoAsync(string sessionCookie)
+        {
+            var id = int.Parse(sessionCookie.Split()[1].Replace("Id=", ""));
+            var account = DBProvider.GetSteamAccount(id);
+            
+            if(account != null)
+                return ActionResultFactory.Json(account);
+            
+            return ActionResultFactory.Json(new SteamAccount[0]);
+        } 
+
+
+
         [HttpGet("accounts")]
         [Authorize]
-        public async Task<IActionResult> GetAccountsAsync(int id)
+        public async Task<IActionResult> GetAccountsAsync([FromQuery] int id)
         {
             var account = DBProvider.GetSteamAccount(id);
             if (account != null)
@@ -28,7 +44,7 @@ namespace HTTPServer.Controllers
         }
 
         [HttpPost("save")]
-        public async Task<IActionResult> SaveAccountAsync(string login, string password)
+        public async Task<IActionResult> SaveAccountAsync([FromQuery] string login, [FromQuery] string password)
         {
             if(AreCorrect(login, password))
             {

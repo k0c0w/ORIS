@@ -21,7 +21,7 @@ namespace HTTPServer.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login([FromQuery] string email, [FromQuery] string password)
         {
             var account = new SteamAccount() { Login = email, Password = password };
             var accountExists = DBProvider.GetSteamAccount(account);

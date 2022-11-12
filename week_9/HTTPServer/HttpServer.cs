@@ -119,6 +119,8 @@ namespace HTTPServer
 
             if (method.GetCustomAttribute<AuthorizeAttribute>() == null || CheckSessionCookie(context.Request.Cookies))
             {
+                if(method.GetCustomAttribute<SessionCookieRequiredAttribute>() != null)
+                    parameters.Add("sessionCookie", context.Request.Cookies["SessionId"].Value);
                 var actionResult = await GetActionResultTaskFromMethod(
                     controller.GetConstructor(new Type[0]).Invoke(new object[0]), method, parameters);
                 await actionResult.ExecuteResultAsync(context);
@@ -205,14 +207,17 @@ namespace HTTPServer
         private MethodInfo? GetRequiredMethod
             (string httpMethod, IEnumerable<MethodInfo?> markedMethods, string route, Dictionary<string, string> parameters)
         {
+            //todo: убрать проверку fromquery
             Func<Type, MethodInfo?> selector = 
                 (type) => markedMethods.Select(x => (x, x.GetCustomAttribute(type) as ApiControllerMethodAttribute))
                                        .Where(
                                             x => x.Item2 != null 
                                             && (string.IsNullOrEmpty(x.Item2.MethodURI) 
                                             ? x.Item1!.Name == route : x.Item2.MethodURI == route))
-                                       .Select(x => x.Item1)
-                                       .Where(x => x.GetParameters().All(param => parameters.ContainsKey(param.Name)))
+                                            .Select(x => x.Item1)
+                                            .Where(x => x.GetParameters()
+                                                        .Where(x => x.GetCustomAttribute<FromQueryAttribute>() != null)
+                                                        .All(param => parameters.ContainsKey(param.Name)))
                                        .FirstOrDefault();
             switch (httpMethod)
             {
