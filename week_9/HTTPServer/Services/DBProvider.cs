@@ -1,5 +1,4 @@
 ﻿using HTTPServer.Models;
-using System.Data.SqlClient;
 using HTTPServer.MyORM;
 
 namespace HTTPServer.Services

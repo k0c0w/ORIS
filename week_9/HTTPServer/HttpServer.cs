@@ -1,7 +1,9 @@
-﻿using HTTPServer.Services;
+﻿using System.Collections.Specialized;
+using HTTPServer.Services;
 using HTTPServer.Services.ServerServices;
 using System.Net;
 using System.Reflection;
+using System.Text.Json;
 
 namespace HTTPServer
 {
@@ -71,6 +73,7 @@ namespace HTTPServer
 
             try
             {
+                //todo: проверять требуется ли авторизация и затем если нужна чекать наличичие сессиии если сессии нет, то кидать 401
                 await GiveContextToControllerByRouteIfExists(context);
             }
             catch
@@ -114,10 +117,29 @@ namespace HTTPServer
             if (method == null)
                 return;
 
-            var actionResult = await GetActionResultTaskFromMethod(
-                controller.GetConstructor(new Type[0]).Invoke(new object[0]), method, parameters);
+            if (method.GetCustomAttribute<AuthorizeAttribute>() == null || CheckSessionCookie(context.Request.Cookies))
+            {
+                var actionResult = await GetActionResultTaskFromMethod(
+                    controller.GetConstructor(new Type[0]).Invoke(new object[0]), method, parameters);
+                await actionResult.ExecuteResultAsync(context);
+            }
+            else
+                context.Response
+                    .SetStatusCode((int)HttpStatusCode.Unauthorized)
+                    .Close();
+        }
 
-            await actionResult.ExecuteResultAsync(context);
+        private bool CheckSessionCookie(CookieCollection cookies)
+        {
+            if (cookies["SessionId"] != null)
+            {
+                var values = cookies["SessionId"].Value.Split();
+                if (values.Length != 2)
+                    return false;
+                return  values[0] == "IsAuthorized=True";
+            }
+
+            return false;
         }
 
 

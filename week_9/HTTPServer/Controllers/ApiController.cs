@@ -9,6 +9,7 @@ namespace HTTPServer.Controllers
     public class ApiController
     {
         [HttpGet("accounts")]
+        [Authorize]
         public async Task<IActionResult> GetAccountsAsync(int id)
         {
             var account = DBProvider.GetSteamAccount(id);
@@ -19,6 +20,7 @@ namespace HTTPServer.Controllers
         }
 
         [HttpGet("accounts")]
+        [Authorize]
         public async Task<IActionResult> GetAccountsAsync()
         {
             var list = DBProvider.GetSteamAccounts();

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Xml.Serialization;
 
 namespace HTTPServer.Services.ServerServices;
 
@@ -50,10 +51,7 @@ public class HtmlResult : IActionResult
                 .SetContentType(".html");
             if (_sessionInfo != null)
             {
-                /*response.Headers.Add("Set-Cookie", "SessionId={"
-                     +$"IsAuthorize: {_sessionInfo.IsAuthorized}, Id={_sessionInfo.AccountId}" +"}");*/
-                response.Cookies.Add(new Cookie("SessionId", 
-                    "{" +$"IsAuthorize: {_sessionInfo.IsAuthorized}, Id={_sessionInfo.AccountId}" +"}"));
+                response.Cookies.Add(new Cookie("SessionId", $"IsAuthorized={_sessionInfo.IsAuthorized} Id={_sessionInfo.AccountId}"));
             }
 
             await response.WriteToBodyAsync(_htmlBytes);
