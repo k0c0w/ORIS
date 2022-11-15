@@ -1,13 +1,12 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.Json;
-using System.Xml.Serialization;
 
 namespace HTTPServer.Services.ServerServices;
 
 public static class ActionResultFactory
 {
-    public static IActionResult SendHtml(string html) => new HtmlResult(html);
+    public static IActionResult SendHtml(string html) => new HtmlResult(html); 
     public static IActionResult SendHtml(string html, SessionInfo sessionInfo) => new HtmlResult(html, sessionInfo);
     public static IActionResult SendHtml(byte[] html) => new HtmlResult(html);
 
@@ -16,6 +15,8 @@ public static class ActionResultFactory
     public static IActionResult Json<T>(T model) => new Json<T>(model);
 
     public static IActionResult NotFound() => new NotFound();
+
+    public static IActionResult Unauthorized() => new Unauthorized();
 }
 
 public class NotFound : IActionResult
@@ -25,6 +26,15 @@ public class NotFound : IActionResult
         context.Response.SetStatusCode((int)HttpStatusCode.NotFound)
             .Write404PageToBody()
             .Close();
+        return Task.CompletedTask;
+    }
+}
+
+public class Unauthorized : IActionResult
+{
+    public Task ExecuteResultAsync(HttpListenerContext context)
+    {
+        context.Response.SetStatusCode((int)HttpStatusCode.Unauthorized);
         return Task.CompletedTask;
     }
 }
@@ -51,7 +61,7 @@ public class HtmlResult : IActionResult
                 .SetContentType(".html");
             if (_sessionInfo != null)
             {
-                response.Cookies.Add(new Cookie("SessionId", $"IsAuthorized={_sessionInfo.IsAuthorized} Id={_sessionInfo.AccountId}"));
+                response.Cookies.Add(new Cookie("SessionId", $"{_sessionInfo.Guid}"));
             }
 
             await response.WriteToBodyAsync(_htmlBytes);

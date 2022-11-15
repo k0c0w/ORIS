@@ -13,6 +13,7 @@ namespace HTTPServer
         public readonly int _port;
         readonly ILogger logger;
         readonly HttpListener listener = new HttpListener();
+        private readonly SessionManager _sessionManager = SessionManager.Instance;
 
         public static string Path { get; private set; }
         public bool IsRunning { get; private set; }
@@ -106,46 +107,54 @@ namespace HTTPServer
             var controller = GetRequiredController(controllerType, controllerRoute, Assembly.GetExecutingAssembly());
 
             if (controller == null)
+            {
+                await ActionResultFactory.NotFound().ExecuteResultAsync(context);
                 return;
+            }
+            
             if (string.IsNullOrEmpty(methodRoute))
                 methodRoute = controller.Name.Replace("Controller", "");
 
             var markedMethods = controller.GetMethods().Where(x => x.GetCustomAttribute(typeof(ApiControllerMethodAttribute)) != null);
             var parameters = GetParametersFromQuery(context);
-            var method = GetRequiredMethod(httpMethod, markedMethods, methodRoute, parameters);
+            var method = GetRequiredMethod(httpMethod, markedMethods, methodRoute, parameters.Keys);
 
             if (method == null)
-                return;
-
-            if (method.GetCustomAttribute<AuthorizeAttribute>() == null || CheckSessionCookie(context.Request.Cookies))
             {
-                if(method.GetCustomAttribute<SessionCookieRequiredAttribute>() != null)
-                    parameters.Add("sessionCookie", context.Request.Cookies["SessionId"].Value);
+                await ActionResultFactory.NotFound().ExecuteResultAsync(context);
+                return;
+            }
+
+            //добавить в 133 строчку tryget session, а в 130 извлекать guid?
+            Session? session = null;
+            if (method.GetCustomAttribute<AuthorizeRequiredAttribute>() == null 
+                || IsAuthorized(context.Request.Cookies, out session))
+            {
+                if (method.GetCustomAttribute<CookieRequiredAttribute>() != null)
+                    parameters.Add("cookies", context.Request.Cookies);
+                if (method.GetCustomAttribute<SessionRequiredAttribute>() != null)
+                    parameters.Add("session", session);
                 var actionResult = await GetActionResultTaskFromMethod(
                     controller.GetConstructor(new Type[0]).Invoke(new object[0]), method, parameters);
                 await actionResult.ExecuteResultAsync(context);
             }
-            else
-                context.Response
-                    .SetStatusCode((int)HttpStatusCode.Unauthorized)
-                    .Close();
+            else await ActionResultFactory.Unauthorized().ExecuteResultAsync(context);
         }
-
-        private bool CheckSessionCookie(CookieCollection cookies)
+        
+        private bool IsAuthorized(CookieCollection cookies, out Session? session)
         {
+            // session check?
+            session = null;
             if (cookies["SessionId"] != null)
-            {
-                var values = cookies["SessionId"].Value.Split();
-                if (values.Length != 2)
-                    return false;
-                return  values[0] == "IsAuthorized=True";
-            }
+                return Guid.TryParse(cookies["SessionId"].Value, out var guid) 
+                       && SessionManager.Instance.TryGetSession(guid, out session);
 
             return false;
         }
 
 
-        private Task<IActionResult> GetActionResultTaskFromMethod(object controller, MethodInfo method, Dictionary<string, string> parameters)
+        private Task<IActionResult> GetActionResultTaskFromMethod(object controller,
+            MethodInfo method, Dictionary<string, object> parameters)
         {
 
             var paramsIn = method.GetParameters()
@@ -155,10 +164,10 @@ namespace HTTPServer
             return (Task<IActionResult>)method.Invoke(controller, paramsIn);
         }
         
-        
-        private Dictionary<string, string> GetParametersFromQuery(HttpListenerContext context)
+        //или string? а как передавать сессию тогда?
+        private Dictionary<string, object> GetParametersFromQuery(HttpListenerContext context)
         {
-            var dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, object>();
             var method = context.Request.HttpMethod;
             if(method=="GET") 
                 foreach (var key in context.Request.QueryString.AllKeys)
@@ -205,7 +214,7 @@ namespace HTTPServer
         }
 
         private MethodInfo? GetRequiredMethod
-            (string httpMethod, IEnumerable<MethodInfo?> markedMethods, string route, Dictionary<string, string> parameters)
+            (string httpMethod, IEnumerable<MethodInfo?> markedMethods, string route, IEnumerable<string> parameters)
         {
             //todo: убрать проверку fromquery
             Func<Type, MethodInfo?> selector = 
@@ -217,7 +226,7 @@ namespace HTTPServer
                                             .Select(x => x.Item1)
                                             .Where(x => x.GetParameters()
                                                         .Where(x => x.GetCustomAttribute<FromQueryAttribute>() != null)
-                                                        .All(param => parameters.ContainsKey(param.Name)))
+                                                        .All(param => parameters.Contains(param.Name)))
                                        .FirstOrDefault();
             switch (httpMethod)
             {
