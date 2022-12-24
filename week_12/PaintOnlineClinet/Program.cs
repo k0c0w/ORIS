@@ -1,4 +1,4 @@
-namespace TapChat
+namespace PaintOnlineClient
 {
     internal static class Program
     {
