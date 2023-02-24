@@ -1,29 +1,31 @@
 import React from "react";
 import DogsList from "../components/DogsList";
-import { GetAPIbreedsEndpoint } from "../components/APIKEY";
+import { GetAPIbreedsEndpoint, TotalURL } from "../components/APIKEY";
 
 class DogsListContainer extends React.Component {
     constructor(props){
         super(props);
         this.state = { 
-            page: 0,
-            dogs: []
+            dogs: [],
+            total: 0
         }
     }
 
     componentDidMount() {
-        fetch(GetAPIbreedsEndpoint())
+        fetch(TotalURL)
+        .then((response) => response.json())
+        .then(result => {this.setState({total: result.total, dogs: this.state.dogs});
+                        return fetch(GetAPIbreedsEndpoint(1,300));})
         .then(result => result.json())
-        .then(result => this.setState({page:1, dogs:result}))
+        .then(result => this.setState({total: this.state.total, dogs:result}))
+        .catch(err => console.log("fetch error:" + err))
     }
 
     render() {
         return (
-            <DogsList {...this.props} dogs = {this.state.dogs}/>
+            <DogsList {...this.props} dogs = {this.state.dogs} total = {this.state.total}/>
         );
     }
 }
-
-let mapStateToProps = (state) => ({}) 
 
 export default DogsListContainer;
