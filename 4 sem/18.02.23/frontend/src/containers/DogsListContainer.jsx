@@ -12,7 +12,7 @@ class DogsListContainer extends React.Component {
     }
 
     componentDidMount() {
-        fetch('https://localhost:44331/breeds')
+        fetch(GetAPIbreedsEndpoint())
         .then(result => result.json())
         .then(result => this.setState({page:1, dogs:result}))
     }
