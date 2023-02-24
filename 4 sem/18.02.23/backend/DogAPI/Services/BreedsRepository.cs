@@ -1,18 +1,23 @@
-﻿using DogAPI.Models;
+﻿using System.Text.Json;
+using DogAPI.Models;
 
 namespace DogAPI.Services
 {
     public static class BreedsRepository
     {
 
-        public static List<Breed> AllBreeds = new List<Breed>() 
+        static BreedsRepository()
         {
-            new Breed(1, "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving", "Germany, France", "Affenpinscher", 6, 13, 6, 13, new TimeSpan(150000000), "Small rodent hunting, lapdog", "Toy", "https://cdn2.thedogapi.com/images/BJa4kxc4X_1280.jpg"),
-        };
+            using var breedsReader = new StreamReader(@".\Models\Breeds\breeds.json");
+            var breeds = breedsReader.ReadToEnd();
+            AllBreeds = JsonSerializer.Deserialize<List<Breed>>(breeds);
+            using var breedsShortReader = new StreamReader(@".\Models\Breeds\breeds_short.json");
+            var breedsShort = breedsShortReader.ReadToEnd();
+            AllBreedsShortCut = JsonSerializer.Deserialize<List<BreedShortcut>>(breedsShort);
+        }
 
-        public static List<BreedShortcut> AllBreedsShortCut = new List<BreedShortcut>()
-        {
-            new BreedShortcut(1, "Affenpinscher", "https://cdn2.thedogapi.com/images/BJa4kxc4X_1280.jpg", "Toy")
-        };
+        public static readonly List<Breed> AllBreeds;
+
+        public static readonly List<BreedShortcut> AllBreedsShortCut;
     }
 }
