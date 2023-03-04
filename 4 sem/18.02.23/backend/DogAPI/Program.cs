@@ -14,6 +14,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 app.UseCors(p => p
     .AllowAnyOrigin()
     .AllowAnyHeader()
@@ -25,5 +27,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseHttpLogging();
 
 app.Run();
