@@ -18,6 +18,7 @@ namespace DogAPI.Services
 
         public static readonly List<Breed> AllBreeds;
 
+<<<<<<< HEAD
         private static readonly List<BreedShortcut> AllBreedsShortCut;
         
         public static (int, IEnumerable<BreedShortcut>) GetBreeds(int page, int limit)
@@ -53,5 +54,8 @@ namespace DogAPI.Services
                                              .Select(breed => new BreedShortcut(
                                                  breed.id, breed.name, breed.image_url, breed.breed_group)));
         }
+=======
+        public static readonly List<BreedShortcut> AllBreedsShortCut;
+>>>>>>> 1c3de640dea512340f26cc236ec7141f7e0ae131
     }
 }

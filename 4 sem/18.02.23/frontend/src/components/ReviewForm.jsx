@@ -2,7 +2,11 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReviewURL } from "./APIKEY";
 
+<<<<<<< HEAD
 export default function ReviewForm() {
+=======
+export default function ReviewForm(){
+>>>>>>> 1c3de640dea512340f26cc236ec7141f7e0ae131
     const formRef = useRef(null);
     const [status, setStatus] = useState("");
     const navigator = useNavigate();
@@ -44,7 +48,11 @@ export default function ReviewForm() {
 
     if (status === "success") {
         return(navigator('/'));
+<<<<<<< HEAD
     }
+=======
+      }
+>>>>>>> 1c3de640dea512340f26cc236ec7141f7e0ae131
 
     return (
     <>

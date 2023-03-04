@@ -14,8 +14,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 1c3de640dea512340f26cc236ec7141f7e0ae131
 app.UseCors(p => p
     .AllowAnyOrigin()
     .AllowAnyHeader()
@@ -27,6 +30,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+<<<<<<< HEAD
 app.UseHttpLogging();
 
 app.Run();
+=======
+
+app.Run();
+>>>>>>> 1c3de640dea512340f26cc236ec7141f7e0ae131
